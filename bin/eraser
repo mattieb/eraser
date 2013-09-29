@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 #
 # Copyright (c) 2013 Matt Behrens <matt@zigg.com>
 #
@@ -15,13 +15,13 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 
+import argparse
+import sys
+
 from eraser import erase
 
 
-if __name__ == '__main__':
-    import argparse
-    import sys
-
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('path', help='path to zero')
     parser.add_argument('-b', '--blocksize',
@@ -43,6 +43,10 @@ if __name__ == '__main__':
     f = open(args.path, 'r+b')
     erase(f, **kwargs)
     f.close()
+
+
+if __name__ == '__main__':
+    main()
 
 
 # vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4
