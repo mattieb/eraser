@@ -1,0 +1,48 @@
+#!/usr/bin/python
+#
+# Copyright (c) 2013 Matt Behrens <matt@zigg.com>
+#
+# Permission to use, copy, modify, and distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+#
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+# OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+
+from eraser import erase
+
+
+if __name__ == '__main__':
+    import argparse
+    import sys
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('path', help='path to zero')
+    parser.add_argument('-b', '--blocksize',
+                        help='use specified blocksize instead of 512',
+                        action='store')
+    parser.add_argument('-v', '--verbose', help='be noisy', action='store_true')
+    parser.add_argument('-z', '--zero', help='zero with 0x00 instead of 0xff',
+                        action='store_true')
+    args = parser.parse_args()
+
+    kwargs = {}
+    if args.blocksize:
+        kwargs['blocksize'] = int(args.blocksize)
+    if args.verbose:
+        kwargs['err'] = sys.stderr
+    if args.zero:
+        kwargs['zero_char'] = '\x00'
+
+    f = open(args.path, 'r+b')
+    erase(f, **kwargs)
+    f.close()
+
+
+# vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4
